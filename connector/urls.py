@@ -3,5 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path('echo', views.show_request_data),
+    path('', views.redirect_from_index),
+    path('echo', views.show_request_data, name='show_request_data'),
 ]
