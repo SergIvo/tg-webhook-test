@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -13,7 +15,8 @@ def redirect_from_index(request):
 @csrf_exempt
 def show_request_data(request):
     if request.method == 'POST':
-        request_data = dict(request.POST.items())
+        request_data = json.loads(request.body)
+        request_data['headers'] = dict(request.headers)
     elif request.method == 'GET':
         request_data = dict(request.GET.items())
     if request_data:
