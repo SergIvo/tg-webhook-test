@@ -27,7 +27,7 @@ def show_request_data(request):
         hashed_token = hashlib.sha256(
             request_data['headers'].get('X-Telegram-Bot-Api-Secret-Token').encode()
         )
-        bot = RegisteredBot.objects.get(secret_token_hash=hashed_token)
+        bot = RegisteredBot.objects.get(secret_token_hash=hashed_token.hexdigest())
         chat_id = request_data['message']['chat'].get('id')
         message_text = request_data['message'].get('text')
         
