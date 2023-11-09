@@ -13,7 +13,7 @@ class WebhookResponse(models.Model):
         verbose_name_plural = 'Webhook responses'
 
     def __str__(self):
-        return self.recieved_at
+        return self.recieved_at.strftime('%Y.%m.%d %H:%M:%S')
 
 
 class RegisteredBot(models.Model):
@@ -27,4 +27,4 @@ class RegisteredBot(models.Model):
         verbose_name_plural = 'Registered bots'
 
     def __str__(self):
-        return self.recieved_at
+        return self.name
