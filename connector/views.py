@@ -2,8 +2,7 @@ import json
 import hashlib
 
 import httpx
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -22,12 +21,12 @@ def show_request_data(request):
         request_data = dict(request.GET.items())
     if request_data:
         new_entry = WebhookResponse.objects.create(response_content=request_data)
-    request_data['headers'] = dict(request.headers)
-    if request_data['headers'].get('X-Telegram-Bot-Api-Secret-Token'):
+    headers = dict(request.headers)
+    if headers.get('X-Telegram-Bot-Api-Secret-Token'):
         hashed_token = hashlib.sha256(
-            request_data['headers'].get('X-Telegram-Bot-Api-Secret-Token').encode()
+            headers.get('X-Telegram-Bot-Api-Secret-Token').encode()
         )
-        bot = RegisteredBot.objects.get(secret_token_hash=hashed_token.hexdigest())
+        bot = get_object_or_404(RegisteredBot, secret_token_hash=hashed_token.hexdigest())
         chat_id = request_data['message']['chat'].get('id')
         message_text = request_data['message'].get('text')
         
